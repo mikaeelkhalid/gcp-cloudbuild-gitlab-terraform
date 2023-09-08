@@ -43,7 +43,7 @@ resource "google_cloudbuild_trigger" "auth_app_trigger" {
     repository = google_cloudbuildv2_repository.gitlab-go-auth-repo.id
 
     push {
-      branch = "Development"
+      branch = var.build_trigger_branch
     }
   }
 

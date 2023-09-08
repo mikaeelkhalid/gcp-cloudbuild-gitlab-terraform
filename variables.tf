@@ -35,3 +35,9 @@ variable "build_location" {
   default     = var.gcp_region
   description = "Cloud Build Location"
 }
+
+variable "build_trigger_branch" {
+  type        = string
+  default     = "Development"
+  description = "Cloud Build Trigger Branch"
+}
