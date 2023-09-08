@@ -29,7 +29,7 @@ resource "google_cloudbuildv2_connection" "gitlab_connection" {
   }
 }
 
-resource "google_cloudbuildv2_repository" "go_auth_repo" {
+resource "google_cloudbuildv2_repository" "gitlab_go_auth_repo" {
   name              = "gitlab-go-auth-repo"
   location          = var.build_location
   parent_connection = google_cloudbuildv2_connection.gitlab-connection.id
