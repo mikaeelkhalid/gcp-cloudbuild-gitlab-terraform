@@ -13,31 +13,37 @@ resource "google_project_iam_member" "cloudbuild_secret_accessor" {
 resource "google_cloudbuildv2_connection" "gitlab_connection" {
   location = var.build_location
   name     = "gitlab-connection"
+
   gitlab_config {
     authorizer_credential {
       user_token_secret_version = var.gitlab_api_token_secret
     }
+
     read_authorizer_credential {
       user_token_secret_version = var.gitlab_read_api_token_secret
     }
+
     webhook_secret_secret_version = var.gitlab_webhook_token_secret
   }
 }
 
 resource "google_cloudbuildv2_repository" "go_auth_repo" {
-  name = "gitlab-go-auth-repo"
-  location = var.build_location
+  name              = "gitlab-go-auth-repo"
+  location          = var.build_location
   parent_connection = google_cloudbuildv2_connection.gitlab-connection.id
-  remote_uri = var.gitlab_repo_uri
+  remote_uri        = var.gitlab_repo_uri
 }
 
 resource "google_cloudbuild_trigger" "auth_app_trigger" {
   location = var.build_location
+
   repository_event_config {
     repository = google_cloudbuildv2_repository.demo-repo.id
+
     push {
       branch = "Development"
     }
   }
+
   filename = "cloudbuild.yaml"
 }
