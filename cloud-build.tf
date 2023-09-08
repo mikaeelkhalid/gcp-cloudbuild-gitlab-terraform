@@ -1,13 +1,15 @@
+data "google_project" "current" {}
+
 resource "google_project_iam_member" "cloudbuild_artifactregistry_pusher" {
   project = var.gcp_project
   role    = "roles/artifactregistry.writer"
-  member  = "serviceAccount:<REPLACE_WITH_CLOUDBUILD_SA>"
+  member  = "serviceAccount:${data.google_project.current.number}@cloudbuild.gserviceaccount.com"
 }
 
 resource "google_project_iam_member" "cloudbuild_secret_accessor" {
   project = var.gcp_project
   role    = "roles/secretmanager.secretAccessor"
-  member  = "serviceAccount:PROJECT_NUMBER@cloudbuild.gserviceaccount.com"
+  member  = "serviceAccount:${data.google_project.current.number}@cloudbuild.gserviceaccount.com"
 }
 
 resource "google_cloudbuildv2_connection" "gitlab_connection" {
@@ -38,7 +40,7 @@ resource "google_cloudbuild_trigger" "auth_app_trigger" {
   location = var.build_location
 
   repository_event_config {
-    repository = google_cloudbuildv2_repository.demo-repo.id
+    repository = google_cloudbuildv2_repository.gitlab-go-auth-repo.id
 
     push {
       branch = "Development"
