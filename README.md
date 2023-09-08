@@ -1,1 +1,1 @@
-# gcp-cloudbuild-gitlab-terraform
+# GCP Cloud Build with GitLab Setup Using Terraform
