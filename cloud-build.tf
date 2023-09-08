@@ -31,3 +31,13 @@ resource "google_cloudbuildv2_repository" "go_auth_repo" {
   remote_uri = var.gitlab_repo_uri
 }
 
+resource "google_cloudbuild_trigger" "auth_app_trigger" {
+  location = var.build_location
+  repository_event_config {
+    repository = google_cloudbuildv2_repository.demo-repo.id
+    push {
+      branch = "Development"
+    }
+  }
+  filename = "cloudbuild.yaml"
+}
